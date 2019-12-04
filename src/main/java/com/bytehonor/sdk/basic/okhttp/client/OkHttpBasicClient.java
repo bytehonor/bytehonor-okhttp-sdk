@@ -21,15 +21,15 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class OkHttp4Client {
+public class OkHttpBasicClient {
 
-    private static Logger LOG = LoggerFactory.getLogger(OkHttp4Client.class);
-
-    private static boolean DEBUG = false;
+    private static Logger LOG = LoggerFactory.getLogger(OkHttpBasicClient.class);
+    
+    private static final String USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3968.0 Safari/537.36";
 
     private OkHttpClient mOkHttpClient;
 
-    private OkHttp4Client() {
+    private OkHttpBasicClient() {
         this.init();
     }
 
@@ -39,10 +39,10 @@ public class OkHttp4Client {
     }
 
     private static class LazzyHolder {
-        private static OkHttp4Client INSTANCE = new OkHttp4Client();
+        private static OkHttpBasicClient INSTANCE = new OkHttpBasicClient();
     }
 
-    public static OkHttp4Client getInstance() {
+    public static OkHttpBasicClient getInstance() {
         return LazzyHolder.INSTANCE;
     }
 
@@ -51,8 +51,8 @@ public class OkHttp4Client {
         String resultString = null;
         try {
             Response response = call.execute();
-            if (DEBUG && LOG.isInfoEnabled()) {
-                LOG.info("[{}] {} - {}", response.code(), request.method(), request.url());
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("[{}] {} - {}", response.code(), request.method(), request.url());
             }
             // ResponseUtils.valid(response);
             resultString = response.body().string();
@@ -118,6 +118,8 @@ public class OkHttp4Client {
                 builder.addHeader(key, headerMap.get(key));
             }
         }
+        
+        builder.header("User-Agent", USER_AGENT);
 
         Request request = builder.url(url).get().build();
         return execute(request);
@@ -205,13 +207,4 @@ public class OkHttp4Client {
 
         return execute(request);
     }
-
-    public static boolean isDebug() {
-        return DEBUG;
-    }
-
-    public static void setDebug(boolean debug) {
-        OkHttp4Client.DEBUG = debug;
-    }
-
 }
