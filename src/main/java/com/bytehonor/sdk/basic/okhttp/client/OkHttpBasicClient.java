@@ -173,12 +173,25 @@ public class OkHttpBasicClient {
      * @return
      */
     public static String postJson(String url, String json) {
+        Objects.requireNonNull(url, "url");
+        Objects.requireNonNull(json, "json");
         // https://www.jianshu.com/p/c1655f5c0fc0
         // https://blog.csdn.net/qq_19306415/article/details/102954712
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody requestBody = RequestBody.Companion.create(json, mediaType);// FormBody.create(json,
                                                                                 // MediaType.parse("application/json"));//RequestBody.create(mediaType,
                                                                                 // json);
+
+        Request request = new Request.Builder().post(requestBody).url(url).build();
+
+        return execute(request);
+    }
+    
+    public static String postXml(String url, String xml) {
+        Objects.requireNonNull(url, "url");
+        Objects.requireNonNull(xml, "xml");
+        
+        RequestBody requestBody = FormBody.create(xml, MediaType.parse("application/xml"));//RequestBody.create(mediaType, xml);
 
         Request request = new Request.Builder().post(requestBody).url(url).build();
 
