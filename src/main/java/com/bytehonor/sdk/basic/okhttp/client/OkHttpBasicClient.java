@@ -204,6 +204,11 @@ public class OkHttpBasicClient {
             throws OkhttpBasicSdkException {
         return upload(url, paramsMap, file, "pic");
     }
+    
+    public static String uploadFile(String url, Map<String, String> paramsMap, File file)
+            throws OkhttpBasicSdkException {
+        return upload(url, paramsMap, file, "file");
+    }
 
     public static String upload(String url, Map<String, String> paramsMap, File file, String fileKey)
             throws OkhttpBasicSdkException {
