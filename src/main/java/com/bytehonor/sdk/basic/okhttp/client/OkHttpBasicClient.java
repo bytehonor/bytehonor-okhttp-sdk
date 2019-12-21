@@ -200,9 +200,9 @@ public class OkHttpBasicClient {
 
     public static String upload(String url, Map<String, String> paramsMap, File file) throws OkhttpBasicSdkException {
         Objects.requireNonNull(url, "url");
-        MediaType mediaType = MediaType.parse("multipart/form-data");
-        MultipartBody.Builder multipartBuilder = new MultipartBody.Builder().setType(mediaType);
+        MultipartBody.Builder multipartBuilder = new MultipartBody.Builder();//.setType(mediaType);
         if (file != null) {
+            MediaType mediaType = MediaType.parse("multipart/form-data");
             RequestBody fileBody = FormBody.create(file, mediaType);
             multipartBuilder.addFormDataPart("media", file.getName(), fileBody);
             multipartBuilder.addFormDataPart("filename", file.getName());
