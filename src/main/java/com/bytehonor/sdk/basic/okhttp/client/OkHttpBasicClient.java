@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 
 import com.bytehonor.sdk.basic.okhttp.exception.OkhttpBasicSdkException;
 
-import okhttp3.Call;
 import okhttp3.FormBody;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -24,7 +23,7 @@ import okhttp3.Response;
 public class OkHttpBasicClient {
 
     private static Logger LOG = LoggerFactory.getLogger(OkHttpBasicClient.class);
-    
+
     private static final String USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3968.0 Safari/537.36";
 
     private OkHttpClient mOkHttpClient;
@@ -47,10 +46,9 @@ public class OkHttpBasicClient {
     }
 
     private static String execute(Request request) throws OkhttpBasicSdkException {
-        Call call = getInstance().mOkHttpClient.newCall(request);
         String resultString = null;
         try {
-            Response response = call.execute();
+            Response response = getInstance().mOkHttpClient.newCall(request).execute();
             if (LOG.isDebugEnabled()) {
                 LOG.debug("[{}] {} - {}", response.code(), request.method(), request.url());
             }
@@ -118,7 +116,7 @@ public class OkHttpBasicClient {
                 builder.addHeader(item.getKey(), item.getValue());
             }
         }
-        
+
         builder.header("User-Agent", USER_AGENT);
 
         Request request = builder.url(url).get().build();
@@ -177,34 +175,43 @@ public class OkHttpBasicClient {
         Objects.requireNonNull(json, "json");
         // https://www.jianshu.com/p/c1655f5c0fc0
         // https://blog.csdn.net/qq_19306415/article/details/102954712
-        MediaType mediaType = MediaType.parse("application/json");
-        RequestBody requestBody = RequestBody.Companion.create(json, mediaType);// FormBody.create(json,
-                                                                                // MediaType.parse("application/json"));//RequestBody.create(mediaType,
-                                                                                // json);
+        MediaType mediaType = MediaType.parse("application/json; charset=utf-8");
+        RequestBody requestBody = RequestBody.Companion.create(json, mediaType);
 
         Request request = new Request.Builder().post(requestBody).url(url).build();
 
         return execute(request);
     }
-    
+
     public static String postXml(String url, String xml) {
         Objects.requireNonNull(url, "url");
         Objects.requireNonNull(xml, "xml");
-        
-        RequestBody requestBody = FormBody.create(xml, MediaType.parse("application/xml"));//RequestBody.create(mediaType, xml);
+
+        MediaType mediaType = MediaType.parse("application/xml; charset=utf-8");
+        RequestBody requestBody = RequestBody.Companion.create(xml, mediaType);
 
         Request request = new Request.Builder().post(requestBody).url(url).build();
 
         return execute(request);
     }
 
-    public static String upload(String url, Map<String, String> paramsMap, File file) throws OkhttpBasicSdkException {
+    public static String uploadMedia(String url, Map<String, String> paramsMap, File file)
+            throws OkhttpBasicSdkException {
+        return upload(url, paramsMap, file, "media");
+    }
+
+    public static String uploadPic(String url, Map<String, String> paramsMap, File file)
+            throws OkhttpBasicSdkException {
+        return upload(url, paramsMap, file, "pic");
+    }
+
+    public static String upload(String url, Map<String, String> paramsMap, File file, String fileKey)
+            throws OkhttpBasicSdkException {
         Objects.requireNonNull(url, "url");
-        MultipartBody.Builder multipartBuilder = new MultipartBody.Builder();//.setType(mediaType);
+        MultipartBody.Builder multipartBuilder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         if (file != null) {
-            MediaType mediaType = MediaType.parse("multipart/form-data");
-            RequestBody fileBody = FormBody.create(file, mediaType);
-            multipartBuilder.addFormDataPart("media", file.getName(), fileBody);
+            RequestBody fileBody = FormBody.create(file, MultipartBody.FORM);
+            multipartBuilder.addFormDataPart(fileKey, file.getName(), fileBody);
             multipartBuilder.addFormDataPart("filename", file.getName());
             multipartBuilder.addFormDataPart("filelength", String.valueOf(file.length()));
         }
@@ -214,7 +221,7 @@ public class OkHttpBasicClient {
                 multipartBuilder.addFormDataPart(item.getKey(), item.getValue());
             }
         }
-        MultipartBody multipartBody = multipartBuilder.build();
+        RequestBody multipartBody = multipartBuilder.build();
         Request.Builder requestBuilder = new Request.Builder();
 
         Request request = requestBuilder.url(url).post(multipartBody).build();
