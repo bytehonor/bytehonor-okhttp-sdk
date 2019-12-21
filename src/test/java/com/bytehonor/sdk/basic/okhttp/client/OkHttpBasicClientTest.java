@@ -6,7 +6,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bytehonor.sdk.basic.okhttp.exception.WeixinMpSdkException;
+import com.bytehonor.sdk.basic.okhttp.exception.OkhttpBasicSdkException;
 
 public class OkHttpBasicClientTest {
 
@@ -19,7 +19,7 @@ public class OkHttpBasicClientTest {
             // 测测header是否是浏览器的
             String html = OkHttpBasicClient.get("https://www.bytehonor.com");
             LOG.info("html:{}", html);
-        } catch (WeixinMpSdkException e) {
+        } catch (OkhttpBasicSdkException e) {
             LOG.error("xxxx", e);
             isOk = false;
         }

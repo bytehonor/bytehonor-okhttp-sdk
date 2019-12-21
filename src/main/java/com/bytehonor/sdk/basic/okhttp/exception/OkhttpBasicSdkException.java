@@ -4,19 +4,19 @@ package com.bytehonor.sdk.basic.okhttp.exception;
  * @author <a href="https://github.com/lijianqiang">lijianqiang</a>
  *
  */
-public class WeixinMpSdkException extends RuntimeException {
+public class OkhttpBasicSdkException extends RuntimeException {
 
     private static final long serialVersionUID = 8241747723232910227L;
 
-    public WeixinMpSdkException() {
+    public OkhttpBasicSdkException() {
         super();
     }
 
-    public WeixinMpSdkException(String message) {
+    public OkhttpBasicSdkException(String message) {
         super(message);
     }
 
-    public WeixinMpSdkException(Exception cause) {
+    public OkhttpBasicSdkException(Exception cause) {
         super(cause);
     }
 }

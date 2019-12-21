@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bytehonor.sdk.basic.okhttp.exception.WeixinMpSdkException;
+import com.bytehonor.sdk.basic.okhttp.exception.OkhttpBasicSdkException;
 
 import okhttp3.Call;
 import okhttp3.FormBody;
@@ -46,7 +46,7 @@ public class OkHttpBasicClient {
         return LazzyHolder.INSTANCE;
     }
 
-    private static String execute(Request request) throws WeixinMpSdkException {
+    private static String execute(Request request) throws OkhttpBasicSdkException {
         Call call = getInstance().mOkHttpClient.newCall(request);
         String resultString = null;
         try {
@@ -58,7 +58,7 @@ public class OkHttpBasicClient {
             resultString = response.body().string();
         } catch (IOException e) {
             LOG.error("{}, error:{}", request.url(), e.getMessage());
-            throw new WeixinMpSdkException(e.getMessage());
+            throw new OkhttpBasicSdkException(e.getMessage());
         }
         if (LOG.isDebugEnabled()) {
             LOG.debug("response:{}", resultString);
@@ -71,9 +71,9 @@ public class OkHttpBasicClient {
      * 
      * @param url
      * @return
-     * @throws WeixinMpSdkException
+     * @throws OkhttpBasicSdkException
      */
-    public static String get(String url) throws WeixinMpSdkException {
+    public static String get(String url) throws OkhttpBasicSdkException {
         return get(url, null, null);
     }
 
@@ -83,9 +83,9 @@ public class OkHttpBasicClient {
      * @param url
      * @param paramsMap
      * @return
-     * @throws WeixinMpSdkException
+     * @throws OkhttpBasicSdkException
      */
-    public static String get(String url, Map<String, String> paramsMap) throws WeixinMpSdkException {
+    public static String get(String url, Map<String, String> paramsMap) throws OkhttpBasicSdkException {
         return get(url, paramsMap, null);
     }
 
@@ -96,10 +96,10 @@ public class OkHttpBasicClient {
      * @param paramsMap
      * @param headerMap
      * @return
-     * @throws WeixinMpSdkException
+     * @throws OkhttpBasicSdkException
      */
     public static String get(String url, Map<String, String> paramsMap, Map<String, String> headerMap)
-            throws WeixinMpSdkException {
+            throws OkhttpBasicSdkException {
         Objects.requireNonNull(url, "url");
         if (paramsMap != null && paramsMap.isEmpty() == false) {
             StringBuilder sb = new StringBuilder(url);
@@ -131,9 +131,9 @@ public class OkHttpBasicClient {
      * @param url
      * @param paramsMap
      * @return
-     * @throws WeixinMpSdkException
+     * @throws OkhttpBasicSdkException
      */
-    public static String postForm(String url, Map<String, String> paramsMap) throws WeixinMpSdkException {
+    public static String postForm(String url, Map<String, String> paramsMap) throws OkhttpBasicSdkException {
         return postForm(url, paramsMap, null);
     }
 
@@ -144,10 +144,10 @@ public class OkHttpBasicClient {
      * @param paramsMap
      * @param headerMap
      * @return
-     * @throws WeixinMpSdkException
+     * @throws OkhttpBasicSdkException
      */
     public static String postForm(String url, Map<String, String> paramsMap, Map<String, String> headerMap)
-            throws WeixinMpSdkException {
+            throws OkhttpBasicSdkException {
         Objects.requireNonNull(url, "url");
         FormBody.Builder formBody = new FormBody.Builder();
         if (paramsMap != null && paramsMap.isEmpty() == false) {
@@ -198,7 +198,7 @@ public class OkHttpBasicClient {
         return execute(request);
     }
 
-    public static String upload(String url, Map<String, String> paramsMap, File file) throws WeixinMpSdkException {
+    public static String upload(String url, Map<String, String> paramsMap, File file) throws OkhttpBasicSdkException {
         Objects.requireNonNull(url, "url");
         MultipartBody.Builder multipartBuilder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         if (file != null) {
