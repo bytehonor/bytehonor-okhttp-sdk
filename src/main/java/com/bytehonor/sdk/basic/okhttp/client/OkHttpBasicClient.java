@@ -114,8 +114,8 @@ public class OkHttpBasicClient {
 
         Request.Builder builder = new Request.Builder();
         if (headerMap != null && headerMap.isEmpty() == false) {
-            for (String key : headerMap.keySet()) {
-                builder.addHeader(key, headerMap.get(key));
+            for (Entry<String, String> item : headerMap.entrySet()) {
+                builder.addHeader(item.getKey(), item.getValue());
             }
         }
         
@@ -151,15 +151,15 @@ public class OkHttpBasicClient {
         Objects.requireNonNull(url, "url");
         FormBody.Builder formBody = new FormBody.Builder();
         if (paramsMap != null && paramsMap.isEmpty() == false) {
-            for (String key : paramsMap.keySet()) {
-                formBody.add(key, paramsMap.get(key));
+            for (Entry<String, String> item : paramsMap.entrySet()) {
+                formBody.add(item.getKey(), item.getValue());
             }
         }
 
         Request.Builder builder = new Request.Builder();
         if (headerMap != null && headerMap.isEmpty() == false) {
-            for (String key : headerMap.keySet()) {
-                builder.addHeader(key, headerMap.get(key));
+            for (Entry<String, String> item : headerMap.entrySet()) {
+                builder.addHeader(item.getKey(), item.getValue());
             }
         }
 
@@ -200,17 +200,18 @@ public class OkHttpBasicClient {
 
     public static String upload(String url, Map<String, String> paramsMap, File file) throws OkhttpBasicSdkException {
         Objects.requireNonNull(url, "url");
-        MultipartBody.Builder multipartBuilder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+        MediaType mediaType = MediaType.parse("multipart/form-data");
+        MultipartBody.Builder multipartBuilder = new MultipartBody.Builder().setType(mediaType);
         if (file != null) {
-            RequestBody fileBody = FormBody.create(file, MediaType.parse("multipart/form-data"));
+            RequestBody fileBody = FormBody.create(file, mediaType);
             multipartBuilder.addFormDataPart("media", file.getName(), fileBody);
             multipartBuilder.addFormDataPart("filename", file.getName());
             multipartBuilder.addFormDataPart("filelength", String.valueOf(file.length()));
         }
 
         if (paramsMap != null && paramsMap.isEmpty() == false) {
-            for (String key : paramsMap.keySet()) {
-                multipartBuilder.addFormDataPart(key, paramsMap.get(key));
+            for (Entry<String, String> item : paramsMap.entrySet()) {
+                multipartBuilder.addFormDataPart(item.getKey(), item.getValue());
             }
         }
         MultipartBody multipartBody = multipartBuilder.build();
