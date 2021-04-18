@@ -115,9 +115,10 @@ public class OkHttpBasicClient {
             for (Entry<String, String> item : headerMap.entrySet()) {
                 builder.addHeader(item.getKey(), item.getValue());
             }
+        } else {
+            builder.header("User-Agent", USER_AGENT);
         }
 
-        builder.header("User-Agent", USER_AGENT);
 
         Request request = builder.url(url).get().build();
         return execute(request);

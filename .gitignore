@@ -26,3 +26,6 @@
 /dist/
 /nbdist/
 /.nb-gradle/
+
+# Ignore Gradle build output directory
+build
