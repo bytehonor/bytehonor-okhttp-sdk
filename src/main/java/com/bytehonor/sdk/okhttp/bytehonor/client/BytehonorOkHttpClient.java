@@ -20,15 +20,15 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class OkHttpBasicClient {
+public class BytehonorOkHttpClient {
 
-    private static Logger LOG = LoggerFactory.getLogger(OkHttpBasicClient.class);
+    private static Logger LOG = LoggerFactory.getLogger(BytehonorOkHttpClient.class);
 
     private static final String USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4535.3 Safari/537.36";
 
     private OkHttpClient mOkHttpClient;
 
-    private OkHttpBasicClient() {
+    private BytehonorOkHttpClient() {
         this.init();
     }
 
@@ -38,10 +38,10 @@ public class OkHttpBasicClient {
     }
 
     private static class LazzyHolder {
-        private static OkHttpBasicClient INSTANCE = new OkHttpBasicClient();
+        private static BytehonorOkHttpClient INSTANCE = new BytehonorOkHttpClient();
     }
 
-    public static OkHttpBasicClient getInstance() {
+    public static BytehonorOkHttpClient getInstance() {
         return LazzyHolder.INSTANCE;
     }
 
@@ -118,7 +118,6 @@ public class OkHttpBasicClient {
         } else {
             builder.header("User-Agent", USER_AGENT);
         }
-
 
         Request request = builder.url(url).get().build();
         return execute(request);
@@ -205,7 +204,7 @@ public class OkHttpBasicClient {
             throws BytehonorOkhttpSdkException {
         return upload(url, paramsMap, file, "pic");
     }
-    
+
     public static String uploadFile(String url, Map<String, String> paramsMap, File file)
             throws BytehonorOkhttpSdkException {
         return upload(url, paramsMap, file, "file");

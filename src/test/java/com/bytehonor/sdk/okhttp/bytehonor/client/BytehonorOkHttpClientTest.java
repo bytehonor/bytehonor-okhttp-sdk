@@ -12,16 +12,16 @@ import org.slf4j.LoggerFactory;
 
 import com.bytehonor.sdk.okhttp.bytehonor.exception.BytehonorOkhttpSdkException;
 
-public class OkHttpBasicClientTest {
+public class BytehonorOkHttpClientTest {
 
-    private static final Logger LOG = LoggerFactory.getLogger(OkHttpBasicClientTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(BytehonorOkHttpClientTest.class);
 
     @Test
     public void testGetString2() {
         boolean isOk = true;
         try {
             // 测测header是否是浏览器的
-            String html = OkHttpBasicClient.get("https://www.bytehonor.com");
+            String html = BytehonorOkHttpClient.get("https://www.bytehonor.com");
             LOG.info("html:{}", html);
         } catch (BytehonorOkhttpSdkException e) {
             LOG.error("xxxx", e);
@@ -43,7 +43,7 @@ public class OkHttpBasicClientTest {
             paramsMap.put("status", "xx");
             paramsMap.put("access_token", "xx");
 
-            String res = OkHttpBasicClient.uploadPic(url, paramsMap, file);
+            String res = BytehonorOkHttpClient.uploadPic(url, paramsMap, file);
             LOG.info("res:{}", res);
         } catch (Exception e) {
             isOk = false;
