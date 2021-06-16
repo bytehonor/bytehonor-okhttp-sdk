@@ -1,4 +1,4 @@
-package com.bytehonor.sdk.basic.okhttp.client;
+package com.bytehonor.sdk.okhttp.bytehonor.client;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bytehonor.sdk.basic.okhttp.exception.OkhttpBasicSdkException;
+import com.bytehonor.sdk.okhttp.bytehonor.exception.BytehonorOkhttpSdkException;
 
 import okhttp3.FormBody;
 import okhttp3.MediaType;
@@ -24,7 +24,7 @@ public class OkHttpBasicClient {
 
     private static Logger LOG = LoggerFactory.getLogger(OkHttpBasicClient.class);
 
-    private static final String USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3968.0 Safari/537.36";
+    private static final String USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4535.3 Safari/537.36";
 
     private OkHttpClient mOkHttpClient;
 
@@ -45,7 +45,7 @@ public class OkHttpBasicClient {
         return LazzyHolder.INSTANCE;
     }
 
-    private static String execute(Request request) throws OkhttpBasicSdkException {
+    private static String execute(Request request) throws BytehonorOkhttpSdkException {
         String resultString = null;
         try {
             Response response = getInstance().mOkHttpClient.newCall(request).execute();
@@ -56,7 +56,7 @@ public class OkHttpBasicClient {
             resultString = response.body().string();
         } catch (IOException e) {
             LOG.error("{}, error:{}", request.url(), e.getMessage());
-            throw new OkhttpBasicSdkException(e.getMessage());
+            throw new BytehonorOkhttpSdkException(e.getMessage());
         }
         if (LOG.isDebugEnabled()) {
             LOG.debug("response:{}", resultString);
@@ -69,9 +69,9 @@ public class OkHttpBasicClient {
      * 
      * @param url
      * @return
-     * @throws OkhttpBasicSdkException
+     * @throws BytehonorOkhttpSdkException
      */
-    public static String get(String url) throws OkhttpBasicSdkException {
+    public static String get(String url) throws BytehonorOkhttpSdkException {
         return get(url, null, null);
     }
 
@@ -81,9 +81,9 @@ public class OkHttpBasicClient {
      * @param url
      * @param paramsMap
      * @return
-     * @throws OkhttpBasicSdkException
+     * @throws BytehonorOkhttpSdkException
      */
-    public static String get(String url, Map<String, String> paramsMap) throws OkhttpBasicSdkException {
+    public static String get(String url, Map<String, String> paramsMap) throws BytehonorOkhttpSdkException {
         return get(url, paramsMap, null);
     }
 
@@ -94,10 +94,10 @@ public class OkHttpBasicClient {
      * @param paramsMap
      * @param headerMap
      * @return
-     * @throws OkhttpBasicSdkException
+     * @throws BytehonorOkhttpSdkException
      */
     public static String get(String url, Map<String, String> paramsMap, Map<String, String> headerMap)
-            throws OkhttpBasicSdkException {
+            throws BytehonorOkhttpSdkException {
         Objects.requireNonNull(url, "url");
         if (paramsMap != null && paramsMap.isEmpty() == false) {
             StringBuilder sb = new StringBuilder(url);
@@ -130,9 +130,9 @@ public class OkHttpBasicClient {
      * @param url
      * @param paramsMap
      * @return
-     * @throws OkhttpBasicSdkException
+     * @throws BytehonorOkhttpSdkException
      */
-    public static String postForm(String url, Map<String, String> paramsMap) throws OkhttpBasicSdkException {
+    public static String postForm(String url, Map<String, String> paramsMap) throws BytehonorOkhttpSdkException {
         return postForm(url, paramsMap, null);
     }
 
@@ -143,10 +143,10 @@ public class OkHttpBasicClient {
      * @param paramsMap
      * @param headerMap
      * @return
-     * @throws OkhttpBasicSdkException
+     * @throws BytehonorOkhttpSdkException
      */
     public static String postForm(String url, Map<String, String> paramsMap, Map<String, String> headerMap)
-            throws OkhttpBasicSdkException {
+            throws BytehonorOkhttpSdkException {
         Objects.requireNonNull(url, "url");
         FormBody.Builder formBody = new FormBody.Builder();
         if (paramsMap != null && paramsMap.isEmpty() == false) {
@@ -197,22 +197,22 @@ public class OkHttpBasicClient {
     }
 
     public static String uploadMedia(String url, Map<String, String> paramsMap, File file)
-            throws OkhttpBasicSdkException {
+            throws BytehonorOkhttpSdkException {
         return upload(url, paramsMap, file, "media");
     }
 
     public static String uploadPic(String url, Map<String, String> paramsMap, File file)
-            throws OkhttpBasicSdkException {
+            throws BytehonorOkhttpSdkException {
         return upload(url, paramsMap, file, "pic");
     }
     
     public static String uploadFile(String url, Map<String, String> paramsMap, File file)
-            throws OkhttpBasicSdkException {
+            throws BytehonorOkhttpSdkException {
         return upload(url, paramsMap, file, "file");
     }
 
     public static String upload(String url, Map<String, String> paramsMap, File file, String fileKey)
-            throws OkhttpBasicSdkException {
+            throws BytehonorOkhttpSdkException {
         Objects.requireNonNull(url, "url");
         MultipartBody.Builder multipartBuilder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         if (file != null) {
