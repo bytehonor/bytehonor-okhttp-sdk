@@ -1,4 +1,4 @@
-# okhttp-basic-sdk
-okhttp-basic-sdk
+# bytehonor-okhttp-sdk
+bytehonor-okhttp-sdk
 
 okhttp4
