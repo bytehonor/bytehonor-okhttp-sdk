@@ -29,11 +29,11 @@ publishing {
     repositories {
         maven {
             //指定要上传的maven私服仓库
-            url = "https://maven.huajietaojin.cn/repository/bytehonor-releases/"
+            url = "https://maven.huajietaojin.cn/repository/bytehonor/"
             //认证用户和密码
             credentials {
-                username 'bytehonor-user'
-                password 'bytehonor_pwd'
+                username 'bytehonor'
+                password 'permit'
             }
         }
     }

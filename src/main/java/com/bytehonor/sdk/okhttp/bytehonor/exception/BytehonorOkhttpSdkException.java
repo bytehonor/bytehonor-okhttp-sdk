@@ -1,7 +1,7 @@
 package com.bytehonor.sdk.okhttp.bytehonor.exception;
 
 /**
- * @author <a href="https://github.com/lijianqiang">lijianqiang</a>
+ * @author lijianqiang
  *
  */
 public class BytehonorOkhttpSdkException extends RuntimeException {

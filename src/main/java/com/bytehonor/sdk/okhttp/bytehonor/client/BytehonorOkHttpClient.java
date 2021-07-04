@@ -20,6 +20,10 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+/**
+ * @author lijianqiang
+ *
+ */
 public class BytehonorOkHttpClient {
 
     private static Logger LOG = LoggerFactory.getLogger(BytehonorOkHttpClient.class);
