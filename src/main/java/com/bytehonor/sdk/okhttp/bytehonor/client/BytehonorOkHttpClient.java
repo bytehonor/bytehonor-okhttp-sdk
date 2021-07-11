@@ -37,7 +37,7 @@ public class BytehonorOkHttpClient {
     }
 
     private void init() {
-        mOkHttpClient = new OkHttpClient.Builder().connectTimeout(10L, TimeUnit.SECONDS)
+        mOkHttpClient = new OkHttpClient.Builder().connectTimeout(15L, TimeUnit.SECONDS)
                 .readTimeout(15L, TimeUnit.SECONDS).writeTimeout(15L, TimeUnit.SECONDS).build();
     }
 
