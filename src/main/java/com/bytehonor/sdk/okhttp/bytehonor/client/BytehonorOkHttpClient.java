@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import com.bytehonor.sdk.okhttp.bytehonor.exception.BytehonorOkhttpSdkException;
 
+import okhttp3.ConnectionPool;
 import okhttp3.FormBody;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -37,7 +38,8 @@ public class BytehonorOkHttpClient {
     }
 
     private void init() {
-        mOkHttpClient = new OkHttpClient.Builder().connectTimeout(15L, TimeUnit.SECONDS)
+        ConnectionPool pool = new ConnectionPool(1500, 5L, TimeUnit.MINUTES);
+        mOkHttpClient = new OkHttpClient.Builder().connectionPool(pool).connectTimeout(15L, TimeUnit.SECONDS)
                 .readTimeout(15L, TimeUnit.SECONDS).writeTimeout(15L, TimeUnit.SECONDS).build();
     }
 
