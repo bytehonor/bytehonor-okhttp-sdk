@@ -38,7 +38,7 @@ public class BytehonorOkHttpClient {
 
     private void init() {
         mOkHttpClient = new OkHttpClient.Builder().connectTimeout(10L, TimeUnit.SECONDS)
-                .readTimeout(10L, TimeUnit.SECONDS).writeTimeout(10L, TimeUnit.SECONDS).build();
+                .readTimeout(15L, TimeUnit.SECONDS).writeTimeout(15L, TimeUnit.SECONDS).build();
     }
 
     private static class LazzyHolder {
