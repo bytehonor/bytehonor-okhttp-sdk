@@ -31,6 +31,8 @@ public class BytehonorOkHttpClient {
 
     private static final String USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4535.3 Safari/537.36";
 
+    private static final int MAX_IDLE = 10;
+
     private OkHttpClient mOkHttpClient;
 
     private BytehonorOkHttpClient() {
@@ -38,9 +40,9 @@ public class BytehonorOkHttpClient {
     }
 
     private void init() {
-        ConnectionPool pool = new ConnectionPool(1500, 5L, TimeUnit.MINUTES);
-        mOkHttpClient = new OkHttpClient.Builder().connectionPool(pool).connectTimeout(15L, TimeUnit.SECONDS)
-                .readTimeout(15L, TimeUnit.SECONDS).writeTimeout(15L, TimeUnit.SECONDS).build();
+        ConnectionPool pool = new ConnectionPool(MAX_IDLE, 5L, TimeUnit.MINUTES);
+        mOkHttpClient = new OkHttpClient.Builder().connectionPool(pool).connectTimeout(10L, TimeUnit.SECONDS)
+                .readTimeout(10L, TimeUnit.SECONDS).writeTimeout(10L, TimeUnit.SECONDS).build();
     }
 
     private static class LazzyHolder {
