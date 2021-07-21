@@ -33,6 +33,10 @@ public class BytehonorOkHttpClient {
     private static final String USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4535.3 Safari/537.36";
 
     private static final int MAX_IDLE = 10;
+    
+    private static final int CONNECT_POOL_MAX_TOTAL = 1024;
+
+    private static final int CONNECT_POOL_MAX_PER_ROUTE = 512;
 
     private OkHttpClient mOkHttpClient;
 
@@ -41,10 +45,10 @@ public class BytehonorOkHttpClient {
     }
 
     private void init() {
-        ConnectionPool pool = new ConnectionPool(MAX_IDLE, 5L, TimeUnit.MINUTES);
+        ConnectionPool pool = new ConnectionPool(MAX_IDLE, 3L, TimeUnit.MINUTES);
         Dispatcher dispatcher = new Dispatcher();
-        dispatcher.setMaxRequests(512);
-        dispatcher.setMaxRequestsPerHost(256);
+        dispatcher.setMaxRequests(CONNECT_POOL_MAX_TOTAL);
+        dispatcher.setMaxRequestsPerHost(CONNECT_POOL_MAX_PER_ROUTE);
         mOkHttpClient = new OkHttpClient.Builder().dispatcher(dispatcher).connectionPool(pool)
                 .connectTimeout(10L, TimeUnit.SECONDS).readTimeout(10L, TimeUnit.SECONDS)
                 .writeTimeout(10L, TimeUnit.SECONDS).build();
