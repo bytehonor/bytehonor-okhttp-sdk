@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import com.bytehonor.sdk.okhttp.bytehonor.exception.BytehonorOkhttpSdkException;
 
 import okhttp3.ConnectionPool;
+import okhttp3.Dispatcher;
 import okhttp3.FormBody;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -41,8 +42,12 @@ public class BytehonorOkHttpClient {
 
     private void init() {
         ConnectionPool pool = new ConnectionPool(MAX_IDLE, 5L, TimeUnit.MINUTES);
-        mOkHttpClient = new OkHttpClient.Builder().connectionPool(pool).connectTimeout(10L, TimeUnit.SECONDS)
-                .readTimeout(10L, TimeUnit.SECONDS).writeTimeout(10L, TimeUnit.SECONDS).build();
+        Dispatcher dispatcher = new Dispatcher();
+        dispatcher.setMaxRequests(512);
+        dispatcher.setMaxRequestsPerHost(256);
+        mOkHttpClient = new OkHttpClient.Builder().dispatcher(dispatcher).connectionPool(pool)
+                .connectTimeout(10L, TimeUnit.SECONDS).readTimeout(10L, TimeUnit.SECONDS)
+                .writeTimeout(10L, TimeUnit.SECONDS).build();
     }
 
     private static class LazzyHolder {
