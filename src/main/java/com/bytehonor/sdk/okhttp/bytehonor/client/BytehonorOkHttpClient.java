@@ -50,8 +50,8 @@ public class BytehonorOkHttpClient {
         dispatcher.setMaxRequests(CONNECT_POOL_MAX_TOTAL);
         dispatcher.setMaxRequestsPerHost(CONNECT_POOL_MAX_PER_ROUTE);
         mOkHttpClient = new OkHttpClient.Builder().dispatcher(dispatcher).connectionPool(pool)
-                .connectTimeout(10L, TimeUnit.SECONDS).readTimeout(10L, TimeUnit.SECONDS)
-                .writeTimeout(10L, TimeUnit.SECONDS).build();
+                .connectTimeout(5L, TimeUnit.SECONDS).readTimeout(5L, TimeUnit.SECONDS)
+                .writeTimeout(5L, TimeUnit.SECONDS).build();
     }
 
     private static class LazzyHolder {
