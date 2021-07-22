@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bytehonor.sdk.okhttp.bytehonor.exception.BytehonorOkhttpSdkException;
+import com.bytehonor.sdk.okhttp.bytehonor.exception.BytehonorOkHttpSdkException;
 
 import okhttp3.ConnectionPool;
 import okhttp3.Dispatcher;
@@ -33,10 +33,10 @@ public class BytehonorOkHttpClient {
     private static final String USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4535.3 Safari/537.36";
 
     private static final int MAX_IDLE = 10;
-    
+
     private static final int CONNECT_POOL_MAX_TOTAL = 1024;
 
-    private static final int CONNECT_POOL_MAX_PER_ROUTE = 512;
+    private static final int CONNECT_POOL_MAX_PER_ROUTE = 1024;
 
     private OkHttpClient mOkHttpClient;
 
@@ -45,11 +45,15 @@ public class BytehonorOkHttpClient {
     }
 
     private void init() {
+        mOkHttpClient = build();
+    }
+
+    public static OkHttpClient build() {
         ConnectionPool pool = new ConnectionPool(MAX_IDLE, 3L, TimeUnit.MINUTES);
         Dispatcher dispatcher = new Dispatcher();
         dispatcher.setMaxRequests(CONNECT_POOL_MAX_TOTAL);
         dispatcher.setMaxRequestsPerHost(CONNECT_POOL_MAX_PER_ROUTE);
-        mOkHttpClient = new OkHttpClient.Builder().dispatcher(dispatcher).connectionPool(pool)
+        return new OkHttpClient.Builder().dispatcher(dispatcher).connectionPool(pool)
                 .connectTimeout(5L, TimeUnit.SECONDS).readTimeout(5L, TimeUnit.SECONDS)
                 .writeTimeout(5L, TimeUnit.SECONDS).build();
     }
@@ -62,7 +66,7 @@ public class BytehonorOkHttpClient {
         return LazzyHolder.INSTANCE;
     }
 
-    private static String execute(Request request) throws BytehonorOkhttpSdkException {
+    private static String execute(Request request) throws BytehonorOkHttpSdkException {
         String resultString = null;
         try {
             Response response = getInstance().mOkHttpClient.newCall(request).execute();
@@ -73,7 +77,7 @@ public class BytehonorOkHttpClient {
             resultString = response.body().string();
         } catch (IOException e) {
             LOG.error("{}, error:{}", request.url(), e.getMessage());
-            throw new BytehonorOkhttpSdkException(e.getMessage());
+            throw new BytehonorOkHttpSdkException(e.getMessage());
         }
         if (LOG.isDebugEnabled()) {
             LOG.debug("response:{}", resultString);
@@ -86,9 +90,9 @@ public class BytehonorOkHttpClient {
      * 
      * @param url
      * @return
-     * @throws BytehonorOkhttpSdkException
+     * @throws BytehonorOkHttpSdkException
      */
-    public static String get(String url) throws BytehonorOkhttpSdkException {
+    public static String get(String url) throws BytehonorOkHttpSdkException {
         return get(url, null, null);
     }
 
@@ -98,9 +102,9 @@ public class BytehonorOkHttpClient {
      * @param url
      * @param paramsMap
      * @return
-     * @throws BytehonorOkhttpSdkException
+     * @throws BytehonorOkHttpSdkException
      */
-    public static String get(String url, Map<String, String> paramsMap) throws BytehonorOkhttpSdkException {
+    public static String get(String url, Map<String, String> paramsMap) throws BytehonorOkHttpSdkException {
         return get(url, paramsMap, null);
     }
 
@@ -111,10 +115,10 @@ public class BytehonorOkHttpClient {
      * @param paramsMap
      * @param headerMap
      * @return
-     * @throws BytehonorOkhttpSdkException
+     * @throws BytehonorOkHttpSdkException
      */
     public static String get(String url, Map<String, String> paramsMap, Map<String, String> headerMap)
-            throws BytehonorOkhttpSdkException {
+            throws BytehonorOkHttpSdkException {
         Objects.requireNonNull(url, "url");
         if (paramsMap != null && paramsMap.isEmpty() == false) {
             StringBuilder sb = new StringBuilder(url);
@@ -146,9 +150,9 @@ public class BytehonorOkHttpClient {
      * @param url
      * @param paramsMap
      * @return
-     * @throws BytehonorOkhttpSdkException
+     * @throws BytehonorOkHttpSdkException
      */
-    public static String postForm(String url, Map<String, String> paramsMap) throws BytehonorOkhttpSdkException {
+    public static String postForm(String url, Map<String, String> paramsMap) throws BytehonorOkHttpSdkException {
         return postForm(url, paramsMap, null);
     }
 
@@ -159,10 +163,10 @@ public class BytehonorOkHttpClient {
      * @param paramsMap
      * @param headerMap
      * @return
-     * @throws BytehonorOkhttpSdkException
+     * @throws BytehonorOkHttpSdkException
      */
     public static String postForm(String url, Map<String, String> paramsMap, Map<String, String> headerMap)
-            throws BytehonorOkhttpSdkException {
+            throws BytehonorOkHttpSdkException {
         Objects.requireNonNull(url, "url");
         FormBody.Builder formBody = new FormBody.Builder();
         if (paramsMap != null && paramsMap.isEmpty() == false) {
@@ -213,22 +217,22 @@ public class BytehonorOkHttpClient {
     }
 
     public static String uploadMedia(String url, Map<String, String> paramsMap, File file)
-            throws BytehonorOkhttpSdkException {
+            throws BytehonorOkHttpSdkException {
         return upload(url, paramsMap, file, "media");
     }
 
     public static String uploadPic(String url, Map<String, String> paramsMap, File file)
-            throws BytehonorOkhttpSdkException {
+            throws BytehonorOkHttpSdkException {
         return upload(url, paramsMap, file, "pic");
     }
 
     public static String uploadFile(String url, Map<String, String> paramsMap, File file)
-            throws BytehonorOkhttpSdkException {
+            throws BytehonorOkHttpSdkException {
         return upload(url, paramsMap, file, "file");
     }
 
     public static String upload(String url, Map<String, String> paramsMap, File file, String fileKey)
-            throws BytehonorOkhttpSdkException {
+            throws BytehonorOkHttpSdkException {
         Objects.requireNonNull(url, "url");
         MultipartBody.Builder multipartBuilder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         if (file != null) {

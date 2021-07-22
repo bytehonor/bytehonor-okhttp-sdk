@@ -4,19 +4,19 @@ package com.bytehonor.sdk.okhttp.bytehonor.exception;
  * @author lijianqiang
  *
  */
-public class BytehonorOkhttpSdkException extends RuntimeException {
+public class BytehonorOkHttpSdkException extends RuntimeException {
 
     private static final long serialVersionUID = 8241747723232910227L;
 
-    public BytehonorOkhttpSdkException() {
+    public BytehonorOkHttpSdkException() {
         super();
     }
 
-    public BytehonorOkhttpSdkException(String message) {
+    public BytehonorOkHttpSdkException(String message) {
         super(message);
     }
 
-    public BytehonorOkhttpSdkException(Exception cause) {
+    public BytehonorOkHttpSdkException(Exception cause) {
         super(cause);
     }
 }

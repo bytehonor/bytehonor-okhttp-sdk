@@ -4,7 +4,7 @@ import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
-public class BytehonorOkhttpSdkExceptionTest {
+public class BytehonorOkHttpSdkExceptionTest {
 
     @Test
     public void testOkhttpBasicSdkException() {

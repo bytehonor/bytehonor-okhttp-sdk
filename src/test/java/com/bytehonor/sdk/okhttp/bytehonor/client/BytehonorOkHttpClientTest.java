@@ -14,7 +14,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bytehonor.sdk.okhttp.bytehonor.exception.BytehonorOkhttpSdkException;
+import com.bytehonor.sdk.okhttp.bytehonor.exception.BytehonorOkHttpSdkException;
 
 public class BytehonorOkHttpClientTest {
 
@@ -27,7 +27,7 @@ public class BytehonorOkHttpClientTest {
             // 测测header是否是浏览器的
             String html = BytehonorOkHttpClient.get("https://www.bytehonor.com");
             LOG.info("html:{}", html);
-        } catch (BytehonorOkhttpSdkException e) {
+        } catch (BytehonorOkHttpSdkException e) {
             LOG.error("xxxx", e);
             isOk = false;
         }
@@ -49,7 +49,7 @@ public class BytehonorOkHttpClientTest {
                         BytehonorOkHttpClient.get("https://www.baidu.com");
                         ai.incrementAndGet();
                         countDownLatch.countDown();
-                    } catch (BytehonorOkhttpSdkException e) {
+                    } catch (BytehonorOkHttpSdkException e) {
                         LOG.error("xxxx error:{}", e.getMessage());
                     }
                 }
