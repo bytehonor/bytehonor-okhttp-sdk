@@ -194,12 +194,31 @@ public class BytehonorOkHttpClient {
     public static String postJson(String url, String json) {
         Objects.requireNonNull(url, "url");
         Objects.requireNonNull(json, "json");
+
+        return postJson(url, json);
+    }
+
+    /**
+     * @param url
+     * @param json
+     * @return
+     */
+    public static String postJson(String url, String json, Map<String, String> headerMap) {
+        Objects.requireNonNull(url, "url");
+        Objects.requireNonNull(json, "json");
         // https://www.jianshu.com/p/c1655f5c0fc0
         // https://blog.csdn.net/qq_19306415/article/details/102954712
         MediaType mediaType = MediaType.parse("application/json; charset=utf-8");
         RequestBody requestBody = RequestBody.Companion.create(json, mediaType);
 
-        Request request = new Request.Builder().post(requestBody).url(url).build();
+        Request.Builder builder = new Request.Builder();
+        if (headerMap != null && headerMap.isEmpty() == false) {
+            for (Entry<String, String> item : headerMap.entrySet()) {
+                builder.addHeader(item.getKey(), item.getValue());
+            }
+        }
+
+        Request request = builder.post(requestBody).url(url).build();
 
         return execute(request);
     }
@@ -208,10 +227,24 @@ public class BytehonorOkHttpClient {
         Objects.requireNonNull(url, "url");
         Objects.requireNonNull(xml, "xml");
 
+        return postXml(url, xml);
+    }
+
+    public static String postXml(String url, String xml, Map<String, String> headerMap) {
+        Objects.requireNonNull(url, "url");
+        Objects.requireNonNull(xml, "xml");
+
         MediaType mediaType = MediaType.parse("application/xml; charset=utf-8");
         RequestBody requestBody = RequestBody.Companion.create(xml, mediaType);
 
-        Request request = new Request.Builder().post(requestBody).url(url).build();
+        Request.Builder builder = new Request.Builder();
+        if (headerMap != null && headerMap.isEmpty() == false) {
+            for (Entry<String, String> item : headerMap.entrySet()) {
+                builder.addHeader(item.getKey(), item.getValue());
+            }
+        }
+
+        Request request = builder.post(requestBody).url(url).build();
 
         return execute(request);
     }
