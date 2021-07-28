@@ -195,7 +195,7 @@ public class BytehonorOkHttpClient {
         Objects.requireNonNull(url, "url");
         Objects.requireNonNull(json, "json");
 
-        return postJson(url, json);
+        return postJson(url, json, null);
     }
 
     /**
