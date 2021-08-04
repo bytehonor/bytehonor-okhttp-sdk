@@ -35,7 +35,8 @@ public class BytehonorOkHttpClientTest {
         assertTrue("*testStartThread*", isOk);
     }
 
-    public static void main(String[] arg) {
+    // @Test
+    public void test2() {
         ExecutorService service = Executors.newFixedThreadPool(64);
         int size = 256;
         CountDownLatch countDownLatch = new CountDownLatch(size);
@@ -45,7 +46,6 @@ public class BytehonorOkHttpClientTest {
                 @Override
                 public void run() {
                     try {
-                        // 测测header是否是浏览器的
                         BytehonorOkHttpClient.get("https://www.baidu.com");
                         ai.incrementAndGet();
                         countDownLatch.countDown();
@@ -63,7 +63,6 @@ public class BytehonorOkHttpClientTest {
         }
         int success = ai.intValue();
         LOG.info("success:{}", success);
-//        assertTrue("*testThread*", size == success);
     }
 
 //    @Test
@@ -85,5 +84,19 @@ public class BytehonorOkHttpClientTest {
             LOG.error("testUpload", e);
         }
         assertTrue("testUpload", isOk);
+    }
+
+    // @Test
+    public void testDownload() {
+        String url = "http://www.szse.cn/api/report/ShowReport?SHOWTYPE=xlsx&CATALOGID=1110&TABKEY=tab1&random=0.9754524179109694";
+        String filePath = "D:/test/A股列表.xlsx";
+        boolean isOk = true;
+        try {
+            BytehonorOkHttpClient.download(url, filePath);
+        } catch (Exception e) {
+            isOk = false;
+            LOG.error("testUpload", e);
+        }
+        assertTrue("testDownload", isOk);
     }
 }

@@ -1,7 +1,9 @@
 package com.bytehonor.sdk.okhttp.bytehonor.client;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
@@ -286,5 +288,73 @@ public class BytehonorOkHttpClient {
         Request request = requestBuilder.url(url).post(multipartBody).build();
 
         return execute(request);
+    }
+
+    public static void download(String url, String filePath) {
+        Objects.requireNonNull(url, "url");
+        Objects.requireNonNull(filePath, "filePath");
+        download(url, filePath, null);
+    }
+
+    public static void download(String url, String filePath, Map<String, String> headerMap) {
+        Objects.requireNonNull(url, "url");
+        Objects.requireNonNull(filePath, "filePath");
+
+        Request.Builder builder = new Request.Builder();
+        if (headerMap != null && headerMap.isEmpty() == false) {
+            for (Entry<String, String> item : headerMap.entrySet()) {
+                builder.addHeader(item.getKey(), item.getValue());
+            }
+        } else {
+            builder.header("User-Agent", USER_AGENT);
+        }
+
+        Request request = builder.url(url).get().build();
+
+        // 异步请求
+        InputStream is = null;
+        byte[] buf = new byte[4096];
+        int len = 0;
+        FileOutputStream fos = null;
+        try {
+            File file = new File(filePath);
+
+            Response response = getInstance().mOkHttpClient.newCall(request).execute();
+            if (response.isSuccessful()) {
+                is = response.body().byteStream();
+                fos = new FileOutputStream(file);
+                int size = 0;
+                long total = response.body().contentLength();
+                while ((size = is.read(buf)) != -1) {
+                    len += size;
+                    fos.write(buf, 0, size);
+                    if (LOG.isDebugEnabled()) {
+                        int process = (int) Math.floor(((double) len / total) * 100);
+                        LOG.debug("process:{}", process);
+                    }
+                }
+                fos.flush();
+            } else {
+                throw new BytehonorOkHttpSdkException("Unexpected response " + response.toString());
+            }
+        } catch (IOException e) {
+            LOG.error("download url:{}", url, e);
+            throw new BytehonorOkHttpSdkException(e);
+        } finally {
+            if (is != null) {
+                try {
+                    is.close();
+                } catch (IOException e) {
+                    LOG.error("is.close error", e);
+                }
+            }
+            if (fos != null) {
+                try {
+                    fos.close();
+                } catch (IOException e) {
+                    LOG.error("fos.close error", e);
+                }
+            }
+        }
     }
 }
