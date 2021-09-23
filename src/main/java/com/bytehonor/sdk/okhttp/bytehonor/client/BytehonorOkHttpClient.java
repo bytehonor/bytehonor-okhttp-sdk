@@ -81,9 +81,6 @@ public class BytehonorOkHttpClient {
             LOG.error("{}, error:{}", request.url(), e.getMessage());
             throw new BytehonorOkHttpSdkException(e.getMessage());
         }
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("response:{}", resultString);
-        }
         return resultString;
     }
 
