@@ -247,6 +247,34 @@ public class BytehonorOkHttpClient {
 
         return execute(request);
     }
+    
+    public static String postPlain(String url, String text) {
+        return postPlain(url, text, null);
+    }
+    /**
+     * @param url
+     * @param text
+     * @return
+     */
+    public static String postPlain(String url, String text, Map<String, String> headerMap) {
+        Objects.requireNonNull(url, "url");
+        Objects.requireNonNull(text, "text");
+        // https://www.jianshu.com/p/c1655f5c0fc0
+        // https://blog.csdn.net/qq_19306415/article/details/102954712
+        MediaType mediaType = MediaType.parse("text/plain; charset=utf-8");
+        RequestBody requestBody = RequestBody.Companion.create(text, mediaType);
+
+        Request.Builder builder = new Request.Builder();
+        if (headerMap != null && headerMap.isEmpty() == false) {
+            for (Entry<String, String> item : headerMap.entrySet()) {
+                builder.addHeader(item.getKey(), item.getValue());
+            }
+        }
+
+        Request request = builder.post(requestBody).url(url).build();
+
+        return execute(request);
+    }
 
     public static String uploadMedia(String url, Map<String, String> paramsMap, File file)
             throws BytehonorOkHttpSdkException {

@@ -20,7 +20,7 @@ public class BytehonorOkHttpClientTest {
 
     private static final Logger LOG = LoggerFactory.getLogger(BytehonorOkHttpClientTest.class);
 
-    @Test
+    // @Test
     public void testGetString2() {
         boolean isOk = true;
         try {
@@ -98,5 +98,22 @@ public class BytehonorOkHttpClientTest {
             LOG.error("testUpload", e);
         }
         assertTrue("testDownload", isOk);
+    }
+    
+    @Test
+    public void testPostPlain() {
+        boolean isOk = true;
+        try {
+            // 测测header是否是浏览器的
+            String url = "https://proxy.bytehonor.com/body/test";
+            String text = "helloworld1";
+            String res = BytehonorOkHttpClient.postPlain(url, text);
+            LOG.info("res:{}", res);
+        } catch (BytehonorOkHttpSdkException e) {
+            LOG.error("xxxx", e);
+            isOk = false;
+        }
+
+        assertTrue("*testStartThread*", isOk);
     }
 }
