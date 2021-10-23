@@ -70,8 +70,9 @@ public class BytehonorOkHttpClient {
 
     private static String execute(Request request) throws BytehonorOkHttpSdkException {
         String resultString = null;
+        Response response = null;
         try {
-            Response response = getInstance().mOkHttpClient.newCall(request).execute();
+            response = getInstance().mOkHttpClient.newCall(request).execute();
             if (LOG.isDebugEnabled()) {
                 LOG.debug("[{}] {} - {}", response.code(), request.method(), request.url());
             }
@@ -80,6 +81,10 @@ public class BytehonorOkHttpClient {
         } catch (IOException e) {
             LOG.error("{}, error:{}", request.url(), e.getMessage());
             throw new BytehonorOkHttpSdkException(e.getMessage());
+        } finally {
+            if (response != null) {
+                response.close(); // 20211024
+            }
         }
         return resultString;
     }
@@ -247,10 +252,11 @@ public class BytehonorOkHttpClient {
 
         return execute(request);
     }
-    
+
     public static String postPlain(String url, String text) {
         return postPlain(url, text, null);
     }
+
     /**
      * @param url
      * @param text
