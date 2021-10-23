@@ -23,6 +23,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 /**
  * @author lijianqiang
@@ -77,7 +78,9 @@ public class BytehonorOkHttpClient {
                 LOG.debug("[{}] {} - {}", response.code(), request.method(), request.url());
             }
             // ResponseUtils.valid(response);
-            resultString = response.body().string();
+            ResponseBody body = response.body();
+            resultString = body.string();
+            body.close();
         } catch (IOException e) {
             LOG.error("{}, error:{}", request.url(), e.getMessage());
             throw new BytehonorOkHttpSdkException(e.getMessage());

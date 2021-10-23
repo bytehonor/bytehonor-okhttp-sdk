@@ -20,7 +20,7 @@ public class BytehonorOkHttpClientTest {
 
     private static final Logger LOG = LoggerFactory.getLogger(BytehonorOkHttpClientTest.class);
 
-    // @Test
+    @Test
     public void testGetString2() {
         boolean isOk = true;
         try {
@@ -100,7 +100,7 @@ public class BytehonorOkHttpClientTest {
         assertTrue("testDownload", isOk);
     }
     
-    @Test
+    // @Test
     public void testPostPlain() {
         boolean isOk = true;
         try {
