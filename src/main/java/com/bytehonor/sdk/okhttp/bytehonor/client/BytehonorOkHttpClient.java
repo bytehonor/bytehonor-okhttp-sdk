@@ -33,7 +33,7 @@ public class BytehonorOkHttpClient {
 
     private static Logger LOG = LoggerFactory.getLogger(BytehonorOkHttpClient.class);
 
-    private static final String USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4535.3 Safari/537.36";
+    private static final String USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36";
 
     private static final int MAX_IDLE = 10;
 
@@ -83,7 +83,7 @@ public class BytehonorOkHttpClient {
             body.close();
         } catch (IOException e) {
             LOG.error("{}, error:{}", request.url(), e.getMessage());
-            throw new BytehonorOkHttpSdkException(e.getMessage());
+            throw new BytehonorOkHttpSdkException(e);
         } finally {
             if (response != null) {
                 response.close(); // 20211024
