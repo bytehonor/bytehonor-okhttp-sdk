@@ -57,7 +57,7 @@ public class BytehonorOkHttpClient {
         dispatcher.setMaxRequests(CONNECT_POOL_MAX_TOTAL);
         dispatcher.setMaxRequestsPerHost(CONNECT_POOL_MAX_PER_ROUTE);
         return new OkHttpClient.Builder().dispatcher(dispatcher).connectionPool(pool)
-                .connectTimeout(5L, TimeUnit.SECONDS).readTimeout(5L, TimeUnit.SECONDS)
+                .connectTimeout(6L, TimeUnit.SECONDS).readTimeout(5L, TimeUnit.SECONDS)
                 .writeTimeout(5L, TimeUnit.SECONDS).build();
     }
 
@@ -139,12 +139,11 @@ public class BytehonorOkHttpClient {
         }
 
         Request.Builder builder = new Request.Builder();
+        builder.header("User-Agent", USER_AGENT);
         if (headerMap != null && headerMap.isEmpty() == false) {
             for (Entry<String, String> item : headerMap.entrySet()) {
                 builder.addHeader(item.getKey(), item.getValue());
             }
-        } else {
-            builder.header("User-Agent", USER_AGENT);
         }
 
         Request request = builder.url(url).get().build();
@@ -183,6 +182,7 @@ public class BytehonorOkHttpClient {
         }
 
         Request.Builder builder = new Request.Builder();
+        builder.header("User-Agent", USER_AGENT);
         if (headerMap != null && headerMap.isEmpty() == false) {
             for (Entry<String, String> item : headerMap.entrySet()) {
                 builder.addHeader(item.getKey(), item.getValue());
@@ -219,6 +219,7 @@ public class BytehonorOkHttpClient {
         RequestBody requestBody = RequestBody.Companion.create(json, mediaType);
 
         Request.Builder builder = new Request.Builder();
+        builder.header("User-Agent", USER_AGENT);
         if (headerMap != null && headerMap.isEmpty() == false) {
             for (Entry<String, String> item : headerMap.entrySet()) {
                 builder.addHeader(item.getKey(), item.getValue());
@@ -245,6 +246,7 @@ public class BytehonorOkHttpClient {
         RequestBody requestBody = RequestBody.Companion.create(xml, mediaType);
 
         Request.Builder builder = new Request.Builder();
+        builder.header("User-Agent", USER_AGENT);
         if (headerMap != null && headerMap.isEmpty() == false) {
             for (Entry<String, String> item : headerMap.entrySet()) {
                 builder.addHeader(item.getKey(), item.getValue());
@@ -274,6 +276,7 @@ public class BytehonorOkHttpClient {
         RequestBody requestBody = RequestBody.Companion.create(text, mediaType);
 
         Request.Builder builder = new Request.Builder();
+        builder.header("User-Agent", USER_AGENT);
         if (headerMap != null && headerMap.isEmpty() == false) {
             for (Entry<String, String> item : headerMap.entrySet()) {
                 builder.addHeader(item.getKey(), item.getValue());
@@ -317,9 +320,9 @@ public class BytehonorOkHttpClient {
             }
         }
         RequestBody multipartBody = multipartBuilder.build();
-        Request.Builder requestBuilder = new Request.Builder();
-
-        Request request = requestBuilder.url(url).post(multipartBody).build();
+        Request.Builder builder = new Request.Builder();
+        builder.header("User-Agent", USER_AGENT);
+        Request request = builder.url(url).post(multipartBody).build();
 
         return execute(request);
     }
@@ -335,12 +338,11 @@ public class BytehonorOkHttpClient {
         Objects.requireNonNull(filePath, "filePath");
 
         Request.Builder builder = new Request.Builder();
+        builder.header("User-Agent", USER_AGENT);
         if (headerMap != null && headerMap.isEmpty() == false) {
             for (Entry<String, String> item : headerMap.entrySet()) {
                 builder.addHeader(item.getKey(), item.getValue());
             }
-        } else {
-            builder.header("User-Agent", USER_AGENT);
         }
 
         Request request = builder.url(url).get().build();
