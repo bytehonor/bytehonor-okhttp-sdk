@@ -142,7 +142,7 @@ public class BytehonorOkHttpClient {
         builder.header("User-Agent", USER_AGENT);
         if (headerMap != null && headerMap.isEmpty() == false) {
             for (Entry<String, String> item : headerMap.entrySet()) {
-                builder.addHeader(item.getKey(), item.getValue());
+                builder.header(item.getKey(), item.getValue());
             }
         }
 
@@ -185,7 +185,7 @@ public class BytehonorOkHttpClient {
         builder.header("User-Agent", USER_AGENT);
         if (headerMap != null && headerMap.isEmpty() == false) {
             for (Entry<String, String> item : headerMap.entrySet()) {
-                builder.addHeader(item.getKey(), item.getValue());
+                builder.header(item.getKey(), item.getValue());
             }
         }
 
@@ -222,7 +222,7 @@ public class BytehonorOkHttpClient {
         builder.header("User-Agent", USER_AGENT);
         if (headerMap != null && headerMap.isEmpty() == false) {
             for (Entry<String, String> item : headerMap.entrySet()) {
-                builder.addHeader(item.getKey(), item.getValue());
+                builder.header(item.getKey(), item.getValue());
             }
         }
 
@@ -249,7 +249,7 @@ public class BytehonorOkHttpClient {
         builder.header("User-Agent", USER_AGENT);
         if (headerMap != null && headerMap.isEmpty() == false) {
             for (Entry<String, String> item : headerMap.entrySet()) {
-                builder.addHeader(item.getKey(), item.getValue());
+                builder.header(item.getKey(), item.getValue());
             }
         }
 
@@ -279,7 +279,7 @@ public class BytehonorOkHttpClient {
         builder.header("User-Agent", USER_AGENT);
         if (headerMap != null && headerMap.isEmpty() == false) {
             for (Entry<String, String> item : headerMap.entrySet()) {
-                builder.addHeader(item.getKey(), item.getValue());
+                builder.header(item.getKey(), item.getValue());
             }
         }
 
@@ -341,7 +341,7 @@ public class BytehonorOkHttpClient {
         builder.header("User-Agent", USER_AGENT);
         if (headerMap != null && headerMap.isEmpty() == false) {
             for (Entry<String, String> item : headerMap.entrySet()) {
-                builder.addHeader(item.getKey(), item.getValue());
+                builder.header(item.getKey(), item.getValue());
             }
         }
 
