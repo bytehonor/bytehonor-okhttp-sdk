@@ -1,4 +1,4 @@
-package com.bytehonor.sdk.okhttp.bytehonor.client;
+package com.bytehonor.sdk.beautify.okhttp.client;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bytehonor.sdk.okhttp.bytehonor.exception.BytehonorOkHttpSdkException;
+import com.bytehonor.sdk.beautify.okhttp.exception.OkHttpBeautifyException;
 
 import okhttp3.ConnectionPool;
 import okhttp3.Dispatcher;
@@ -29,9 +29,9 @@ import okhttp3.ResponseBody;
  * @author lijianqiang
  *
  */
-public class BytehonorOkHttpClient {
+public class OkHttpBeautifyClient {
 
-    private static Logger LOG = LoggerFactory.getLogger(BytehonorOkHttpClient.class);
+    private static Logger LOG = LoggerFactory.getLogger(OkHttpBeautifyClient.class);
 
     private static final String USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36";
 
@@ -43,7 +43,7 @@ public class BytehonorOkHttpClient {
 
     private OkHttpClient mOkHttpClient;
 
-    private BytehonorOkHttpClient() {
+    private OkHttpBeautifyClient() {
         this.init();
     }
 
@@ -62,14 +62,14 @@ public class BytehonorOkHttpClient {
     }
 
     private static class LazzyHolder {
-        private static BytehonorOkHttpClient INSTANCE = new BytehonorOkHttpClient();
+        private static OkHttpBeautifyClient INSTANCE = new OkHttpBeautifyClient();
     }
 
-    public static BytehonorOkHttpClient getInstance() {
+    public static OkHttpBeautifyClient getInstance() {
         return LazzyHolder.INSTANCE;
     }
 
-    private static String execute(Request request) throws BytehonorOkHttpSdkException {
+    private static String execute(Request request) throws OkHttpBeautifyException {
         String resultString = null;
         Response response = null;
         try {
@@ -83,7 +83,7 @@ public class BytehonorOkHttpClient {
             body.close();
         } catch (IOException e) {
             LOG.error("{}, error:{}", request.url(), e.getMessage());
-            throw new BytehonorOkHttpSdkException(e);
+            throw new OkHttpBeautifyException(e);
         } finally {
             if (response != null) {
                 response.close(); // 20211024
@@ -97,9 +97,9 @@ public class BytehonorOkHttpClient {
      * 
      * @param url
      * @return
-     * @throws BytehonorOkHttpSdkException
+     * @throws OkHttpBeautifyException
      */
-    public static String get(String url) throws BytehonorOkHttpSdkException {
+    public static String get(String url) throws OkHttpBeautifyException {
         return get(url, null, null);
     }
 
@@ -109,9 +109,9 @@ public class BytehonorOkHttpClient {
      * @param url
      * @param params
      * @return
-     * @throws BytehonorOkHttpSdkException
+     * @throws OkHttpBeautifyException
      */
-    public static String get(String url, Map<String, String> params) throws BytehonorOkHttpSdkException {
+    public static String get(String url, Map<String, String> params) throws OkHttpBeautifyException {
         return get(url, params, null);
     }
 
@@ -122,10 +122,10 @@ public class BytehonorOkHttpClient {
      * @param params
      * @param headers
      * @return
-     * @throws BytehonorOkHttpSdkException
+     * @throws OkHttpBeautifyException
      */
     public static String get(String url, Map<String, String> params, Map<String, String> headers)
-            throws BytehonorOkHttpSdkException {
+            throws OkHttpBeautifyException {
         Objects.requireNonNull(url, "url");
         if (params != null && params.isEmpty() == false) {
             StringBuilder sb = new StringBuilder(url);
@@ -156,9 +156,9 @@ public class BytehonorOkHttpClient {
      * @param url
      * @param params
      * @return
-     * @throws BytehonorOkHttpSdkException
+     * @throws OkHttpBeautifyException
      */
-    public static String postForm(String url, Map<String, String> params) throws BytehonorOkHttpSdkException {
+    public static String postForm(String url, Map<String, String> params) throws OkHttpBeautifyException {
         return postForm(url, params, null);
     }
 
@@ -169,10 +169,10 @@ public class BytehonorOkHttpClient {
      * @param params
      * @param headers
      * @return
-     * @throws BytehonorOkHttpSdkException
+     * @throws OkHttpBeautifyException
      */
     public static String postForm(String url, Map<String, String> params, Map<String, String> headers)
-            throws BytehonorOkHttpSdkException {
+            throws OkHttpBeautifyException {
         Objects.requireNonNull(url, "url");
         FormBody.Builder formBody = new FormBody.Builder();
         if (params != null && params.isEmpty() == false) {
@@ -289,22 +289,22 @@ public class BytehonorOkHttpClient {
     }
 
     public static String uploadMedia(String url, Map<String, String> params, File file)
-            throws BytehonorOkHttpSdkException {
+            throws OkHttpBeautifyException {
         return upload(url, params, file, "media");
     }
 
     public static String uploadPic(String url, Map<String, String> params, File file)
-            throws BytehonorOkHttpSdkException {
+            throws OkHttpBeautifyException {
         return upload(url, params, file, "pic");
     }
 
     public static String uploadFile(String url, Map<String, String> params, File file)
-            throws BytehonorOkHttpSdkException {
+            throws OkHttpBeautifyException {
         return upload(url, params, file, "file");
     }
 
     public static String upload(String url, Map<String, String> params, File file, String fileKey)
-            throws BytehonorOkHttpSdkException {
+            throws OkHttpBeautifyException {
         Objects.requireNonNull(url, "url");
         MultipartBody.Builder multipartBuilder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         if (file != null) {
@@ -371,11 +371,11 @@ public class BytehonorOkHttpClient {
                 }
                 fos.flush();
             } else {
-                throw new BytehonorOkHttpSdkException("Unexpected response " + response.toString());
+                throw new OkHttpBeautifyException("Unexpected response " + response.toString());
             }
         } catch (IOException e) {
             LOG.error("download url:{}", url, e);
-            throw new BytehonorOkHttpSdkException(e);
+            throw new OkHttpBeautifyException(e);
         } finally {
             if (is != null) {
                 try {

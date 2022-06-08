@@ -1,4 +1,4 @@
-package com.bytehonor.sdk.okhttp.bytehonor.client;
+package com.bytehonor.sdk.beautify.okhttp.client;
 
 import static org.junit.Assert.assertTrue;
 
@@ -14,20 +14,20 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bytehonor.sdk.okhttp.bytehonor.exception.BytehonorOkHttpSdkException;
+import com.bytehonor.sdk.beautify.okhttp.exception.OkHttpBeautifyException;
 
-public class BytehonorOkHttpClientTest {
+public class OkHttpBeautifyClientTest {
 
-    private static final Logger LOG = LoggerFactory.getLogger(BytehonorOkHttpClientTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(OkHttpBeautifyClientTest.class);
 
     @Test
     public void testGetString2() {
         boolean isOk = true;
         try {
             // 测测header是否是浏览器的
-            String html = BytehonorOkHttpClient.get("https://www.bytehonor.com");
+            String html = OkHttpBeautifyClient.get("https://www.bytehonor.com");
             LOG.info("html:{}", html);
-        } catch (BytehonorOkHttpSdkException e) {
+        } catch (OkHttpBeautifyException e) {
             LOG.error("xxxx", e);
             isOk = false;
         }
@@ -46,10 +46,10 @@ public class BytehonorOkHttpClientTest {
                 @Override
                 public void run() {
                     try {
-                        BytehonorOkHttpClient.get("https://www.baidu.com");
+                        OkHttpBeautifyClient.get("https://www.baidu.com");
                         ai.incrementAndGet();
                         countDownLatch.countDown();
-                    } catch (BytehonorOkHttpSdkException e) {
+                    } catch (OkHttpBeautifyException e) {
                         LOG.error("xxxx error:{}", e.getMessage());
                     }
                 }
@@ -77,7 +77,7 @@ public class BytehonorOkHttpClientTest {
             paramsMap.put("status", "xx");
             paramsMap.put("access_token", "xx");
 
-            String res = BytehonorOkHttpClient.uploadPic(url, paramsMap, file);
+            String res = OkHttpBeautifyClient.uploadPic(url, paramsMap, file);
             LOG.info("res:{}", res);
         } catch (Exception e) {
             isOk = false;
@@ -92,7 +92,7 @@ public class BytehonorOkHttpClientTest {
         String filePath = "D:/test/A股列表.xlsx";
         boolean isOk = true;
         try {
-            BytehonorOkHttpClient.download(url, filePath);
+            OkHttpBeautifyClient.download(url, filePath);
         } catch (Exception e) {
             isOk = false;
             LOG.error("testUpload", e);
@@ -107,9 +107,9 @@ public class BytehonorOkHttpClientTest {
             // 测测header是否是浏览器的
             String url = "https://proxy.bytehonor.com/body/test";
             String text = "helloworld1";
-            String res = BytehonorOkHttpClient.postPlain(url, text);
+            String res = OkHttpBeautifyClient.postPlain(url, text);
             LOG.info("res:{}", res);
-        } catch (BytehonorOkHttpSdkException e) {
+        } catch (OkHttpBeautifyException e) {
             LOG.error("xxxx", e);
             isOk = false;
         }
