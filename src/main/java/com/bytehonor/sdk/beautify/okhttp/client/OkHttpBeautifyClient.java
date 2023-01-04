@@ -33,7 +33,7 @@ public class OkHttpBeautifyClient {
 
     private static Logger LOG = LoggerFactory.getLogger(OkHttpBeautifyClient.class);
 
-    private static final String USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36";
+    private static final String USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36";
 
     private static final int MAX_IDLE = 10;
 

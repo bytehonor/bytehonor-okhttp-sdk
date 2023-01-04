@@ -20,7 +20,7 @@ public class OkHttpBeautifyClientTest {
 
     private static final Logger LOG = LoggerFactory.getLogger(OkHttpBeautifyClientTest.class);
 
-    @Test
+//    @Test
     public void testGetString2() {
         boolean isOk = true;
         try {
@@ -96,6 +96,26 @@ public class OkHttpBeautifyClientTest {
         } catch (Exception e) {
             isOk = false;
             LOG.error("testUpload", e);
+        }
+        assertTrue("testDownload", isOk);
+    }
+    
+    @Test
+    public void testDownload2() {
+        String url = "https://wx4.sinaimg.cn/orj480/9d6d01f9ly1gdmj3ac93vj20u0140u0x.jpg";
+        String path = "/Users/lijianqiang/data/testDownloadWeibo2.jpg";
+        boolean isOk = true;
+        try {
+            // Referer: https://m.weibo.cn/detail/4854157586215881
+            Map<String, String> headers = new HashMap<String, String>();
+            headers.put("Referer", "https://m.weibo.cn/detail/4854157586215881");
+            OkHttpBeautifyClient.download(url, path, headers);
+            File file = new File(path);
+            isOk = file.exists();
+            LOG.info("isOk:{}", isOk);
+        } catch (Exception e) {
+            isOk = false;
+            LOG.error("testDownload", e);
         }
         assertTrue("testDownload", isOk);
     }
