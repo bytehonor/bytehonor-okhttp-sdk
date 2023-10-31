@@ -1,30 +1,30 @@
 plugins {
-	id 'java-library'
-  id 'maven-publish'
+    id 'java-library'
+    id 'maven-publish'
 }
 
 group = 'com.bytehonor.sdk'
-version = '1.8.2'
+version = '1.8.3'
 sourceCompatibility = 1.8
 
 [compileJava, compileTestJava, javadoc]*.options*.encoding = 'UTF-8'
 
 configurations {
-	developmentOnly
-	runtimeClasspath {
-		extendsFrom developmentOnly
-	}
+    developmentOnly
+    runtimeClasspath {
+        extendsFrom developmentOnly
+    }
 }
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
-    api('com.squareup.okhttp3:okhttp:4.11.0')
-    api('com.squareup.okhttp3:logging-interceptor:4.11.0')
-    implementation('org.slf4j:slf4j-api:1.7.36')
-    implementation('ch.qos.logback:logback-classic:1.2.11')
+    api('com.squareup.okhttp3:okhttp:4.12.0')
+    api('com.squareup.okhttp3:logging-interceptor:4.12.0')
+    implementation('org.slf4j:slf4j-api:2.0.9')
+    implementation('ch.qos.logback:logback-classic:1.4.11')
     testImplementation('junit:junit:4.13.2')
 }
 
