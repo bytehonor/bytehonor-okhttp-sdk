@@ -4,10 +4,14 @@ plugins {
 }
 
 group = 'com.bytehonor.sdk'
-version = '1.8.4'
-sourceCompatibility = 1.8
+version = '1.8.5'
 
 [compileJava, compileTestJava, javadoc]*.options*.encoding = 'UTF-8'
+
+java {
+    sourceCompatibility = 1.8
+    withSourcesJar()
+}
 
 configurations {
     developmentOnly
@@ -33,10 +37,6 @@ jar {
         attributes('Implementation-Title': project.name,
                    'Implementation-Version': project.version)
     }
-}
-
-java {
-    withSourcesJar()
 }
 
 publishing {
