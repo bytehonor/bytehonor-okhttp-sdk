@@ -12,6 +12,7 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.bytehonor.sdk.beautify.okhttp.config.OkhttpConfig;
 import com.bytehonor.sdk.beautify.okhttp.exception.OkHttpBeautifyException;
 
 import okhttp3.ConnectionPool;
@@ -33,47 +34,39 @@ public class OkHttpBeautifyClient {
 
     private static Logger LOG = LoggerFactory.getLogger(OkHttpBeautifyClient.class);
 
-    private static final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36";
-
-    private static final int MAX_IDLE = 10;
-
-    private static final int CONNECT_POOL_MAX_TOTAL = 1024;
-
-    private static final int CONNECT_POOL_MAX_PER_ROUTE = 1024;
-
     private OkHttpClient mOkHttpClient;
 
     private OkHttpBeautifyClient() {
-        this.init();
-    }
-
-    private void init() {
-        mOkHttpClient = build();
+        this.mOkHttpClient = build();
     }
 
     public static OkHttpClient build() {
-        ConnectionPool pool = new ConnectionPool(MAX_IDLE, 3L, TimeUnit.MINUTES);
+        ConnectionPool pool = new ConnectionPool(OkhttpConfig.config().getMaxIdle(), 3L, TimeUnit.MINUTES);
         Dispatcher dispatcher = new Dispatcher();
-        dispatcher.setMaxRequests(CONNECT_POOL_MAX_TOTAL);
-        dispatcher.setMaxRequestsPerHost(CONNECT_POOL_MAX_PER_ROUTE);
+        dispatcher.setMaxRequests(OkhttpConfig.config().getConnectPollMaxTotal());
+        dispatcher.setMaxRequestsPerHost(OkhttpConfig.config().getConnectPollMaxPerRoute());
         return new OkHttpClient.Builder().dispatcher(dispatcher).connectionPool(pool)
-                .connectTimeout(6L, TimeUnit.SECONDS).readTimeout(5L, TimeUnit.SECONDS)
-                .writeTimeout(5L, TimeUnit.SECONDS).build();
+                .connectTimeout(OkhttpConfig.config().getConnectTimeoutSeconds(), TimeUnit.SECONDS)
+                .readTimeout(5L, TimeUnit.SECONDS).writeTimeout(5L, TimeUnit.SECONDS).build();
     }
 
     private static class LazzyHolder {
-        private static OkHttpBeautifyClient INSTANCE = new OkHttpBeautifyClient();
+        private static OkHttpBeautifyClient SINGLE = new OkHttpBeautifyClient();
     }
 
-    public static OkHttpBeautifyClient getInstance() {
-        return LazzyHolder.INSTANCE;
+    private static OkHttpBeautifyClient self() {
+        return LazzyHolder.SINGLE;
+    }
+
+    private static OkHttpClient client() {
+        return self().mOkHttpClient;
     }
 
     private static String execute(Request request) throws OkHttpBeautifyException {
         String resultString = null;
         Response response = null;
         try {
-            response = getInstance().mOkHttpClient.newCall(request).execute();
+            response = client().newCall(request).execute();
             if (LOG.isDebugEnabled()) {
                 LOG.debug("[{}] {} - {}", response.code(), request.method(), request.url());
             }
@@ -139,7 +132,7 @@ public class OkHttpBeautifyClient {
         }
 
         Request.Builder builder = new Request.Builder();
-        builder.header("User-Agent", USER_AGENT);
+        builder.header("User-Agent", OkhttpConfig.config().getUserAgent());
         if (headers != null && headers.isEmpty() == false) {
             for (Entry<String, String> item : headers.entrySet()) {
                 builder.header(item.getKey(), item.getValue());
@@ -182,7 +175,7 @@ public class OkHttpBeautifyClient {
         }
 
         Request.Builder builder = new Request.Builder();
-        builder.header("User-Agent", USER_AGENT);
+        builder.header("User-Agent", OkhttpConfig.config().getUserAgent());
         if (headers != null && headers.isEmpty() == false) {
             for (Entry<String, String> item : headers.entrySet()) {
                 builder.header(item.getKey(), item.getValue());
@@ -219,7 +212,7 @@ public class OkHttpBeautifyClient {
         RequestBody requestBody = RequestBody.Companion.create(json, mediaType);
 
         Request.Builder builder = new Request.Builder();
-        builder.header("User-Agent", USER_AGENT);
+        builder.header("User-Agent", OkhttpConfig.config().getUserAgent());
         if (headers != null && headers.isEmpty() == false) {
             for (Entry<String, String> item : headers.entrySet()) {
                 builder.header(item.getKey(), item.getValue());
@@ -246,7 +239,7 @@ public class OkHttpBeautifyClient {
         RequestBody requestBody = RequestBody.Companion.create(xml, mediaType);
 
         Request.Builder builder = new Request.Builder();
-        builder.header("User-Agent", USER_AGENT);
+        builder.header("User-Agent", OkhttpConfig.config().getUserAgent());
         if (headers != null && headers.isEmpty() == false) {
             for (Entry<String, String> item : headers.entrySet()) {
                 builder.header(item.getKey(), item.getValue());
@@ -276,7 +269,7 @@ public class OkHttpBeautifyClient {
         RequestBody requestBody = RequestBody.Companion.create(text, mediaType);
 
         Request.Builder builder = new Request.Builder();
-        builder.header("User-Agent", USER_AGENT);
+        builder.header("User-Agent", OkhttpConfig.config().getUserAgent());
         if (headers != null && headers.isEmpty() == false) {
             for (Entry<String, String> item : headers.entrySet()) {
                 builder.header(item.getKey(), item.getValue());
@@ -288,18 +281,15 @@ public class OkHttpBeautifyClient {
         return execute(request);
     }
 
-    public static String uploadMedia(String url, Map<String, String> params, File file)
-            throws OkHttpBeautifyException {
+    public static String uploadMedia(String url, Map<String, String> params, File file) throws OkHttpBeautifyException {
         return upload(url, params, file, "media");
     }
 
-    public static String uploadPic(String url, Map<String, String> params, File file)
-            throws OkHttpBeautifyException {
+    public static String uploadPic(String url, Map<String, String> params, File file) throws OkHttpBeautifyException {
         return upload(url, params, file, "pic");
     }
 
-    public static String uploadFile(String url, Map<String, String> params, File file)
-            throws OkHttpBeautifyException {
+    public static String uploadFile(String url, Map<String, String> params, File file) throws OkHttpBeautifyException {
         return upload(url, params, file, "file");
     }
 
@@ -321,7 +311,7 @@ public class OkHttpBeautifyClient {
         }
         RequestBody multipartBody = multipartBuilder.build();
         Request.Builder builder = new Request.Builder();
-        builder.header("User-Agent", USER_AGENT);
+        builder.header("User-Agent", OkhttpConfig.config().getUserAgent());
         Request request = builder.url(url).post(multipartBody).build();
 
         return execute(request);
@@ -338,7 +328,7 @@ public class OkHttpBeautifyClient {
         Objects.requireNonNull(filePath, "filePath");
 
         Request.Builder builder = new Request.Builder();
-        builder.header("User-Agent", USER_AGENT);
+        builder.header("User-Agent", OkhttpConfig.config().getUserAgent());
         if (headers != null && headers.isEmpty() == false) {
             for (Entry<String, String> item : headers.entrySet()) {
                 builder.header(item.getKey(), item.getValue());
@@ -355,7 +345,7 @@ public class OkHttpBeautifyClient {
         try {
             File file = new File(filePath);
 
-            Response response = getInstance().mOkHttpClient.newCall(request).execute();
+            Response response = client().newCall(request).execute();
             if (response.isSuccessful()) {
                 is = response.body().byteStream();
                 fos = new FileOutputStream(file);
