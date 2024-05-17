@@ -4,20 +4,11 @@ plugins {
 }
 
 group = 'com.bytehonor.sdk'
-version = '1.8.6'
-
-[compileJava, compileTestJava, javadoc]*.options*.encoding = 'UTF-8'
+version = '1.9.0'
 
 java {
-    sourceCompatibility = 1.8
+    sourceCompatibility = 17
     withSourcesJar()
-}
-
-configurations {
-    developmentOnly
-    runtimeClasspath {
-        extendsFrom developmentOnly
-    }
 }
 
 repositories {
@@ -27,8 +18,8 @@ repositories {
 dependencies {
     api('com.squareup.okhttp3:okhttp:4.12.0')
     api('com.squareup.okhttp3:logging-interceptor:4.12.0')
-    implementation('org.slf4j:slf4j-api:1.7.36')
-    implementation('ch.qos.logback:logback-classic:1.2.12')
+    implementation('org.slf4j:slf4j-api:2.0.13')
+    implementation('ch.qos.logback:logback-classic:1.4.14')
     testImplementation('junit:junit:4.13.2')
 }
 
@@ -54,4 +45,8 @@ publishing {
             }
         }
     }
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
 }
