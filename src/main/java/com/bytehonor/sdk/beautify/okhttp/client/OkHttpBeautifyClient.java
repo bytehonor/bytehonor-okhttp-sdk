@@ -34,10 +34,10 @@ public class OkHttpBeautifyClient {
 
     private static Logger LOG = LoggerFactory.getLogger(OkHttpBeautifyClient.class);
 
-    private OkHttpClient mOkHttpClient;
+    private OkHttpClient okHttpClient;
 
     private OkHttpBeautifyClient() {
-        this.mOkHttpClient = build();
+        this.okHttpClient = build();
     }
 
     public static OkHttpClient build() {
@@ -59,7 +59,7 @@ public class OkHttpBeautifyClient {
     }
 
     private static OkHttpClient client() {
-        return self().mOkHttpClient;
+        return self().okHttpClient;
     }
 
     private static String execute(Request request) throws OkHttpBeautifyException {
@@ -277,6 +277,32 @@ public class OkHttpBeautifyClient {
         }
 
         Request request = builder.post(requestBody).url(url).build();
+
+        return execute(request);
+    }
+
+    /**
+     * @param url
+     * @param json
+     * @param headers
+     * @return
+     */
+    public static String putJson(String url, String json, Map<String, String> headers) {
+        Objects.requireNonNull(url, "url");
+        Objects.requireNonNull(json, "json");
+
+        MediaType mediaType = MediaType.parse("application/json; charset=utf-8");
+        RequestBody requestBody = RequestBody.Companion.create(json, mediaType);
+
+        Request.Builder builder = new Request.Builder();
+        builder.header("User-Agent", OkhttpConfig.config().getUserAgent());
+        if (headers != null && headers.isEmpty() == false) {
+            for (Entry<String, String> item : headers.entrySet()) {
+                builder.header(item.getKey(), item.getValue());
+            }
+        }
+
+        Request request = builder.put(requestBody).url(url).build();
 
         return execute(request);
     }
