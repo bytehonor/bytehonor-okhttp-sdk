@@ -1,6 +1,6 @@
 package com.bytehonor.sdk.beautify.okhttp.config;
 
-public class OkhttpConfig {
+public class OkHttpConfig {
 
     private static final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36";
 
@@ -20,7 +20,7 @@ public class OkhttpConfig {
 
     private int connectTimeoutSeconds;
 
-    private OkhttpConfig() {
+    private OkHttpConfig() {
         this.userAgent = USER_AGENT;
         this.maxIdle = MAX_IDLE;
         this.connectPollMaxTotal = CONNECT_POOL_MAX_TOTAL;
@@ -29,10 +29,10 @@ public class OkhttpConfig {
     }
 
     private static class LazyHolder {
-        private static OkhttpConfig SINGLE = new OkhttpConfig();
+        private static OkHttpConfig SINGLE = new OkHttpConfig();
     }
 
-    public static OkhttpConfig config() {
+    public static OkHttpConfig config() {
         return LazyHolder.SINGLE;
     }
 
